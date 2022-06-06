@@ -7,7 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import de.notartzt.IntegrationTest;
 import de.notartzt.domain.Location;
+import de.notartzt.domain.ShiftType;
 import de.notartzt.repository.LocationRepository;
+import de.notartzt.service.criteria.LocationCriteria;
 import de.notartzt.service.dto.LocationDTO;
 import de.notartzt.service.mapper.LocationMapper;
 import java.util.List;
@@ -163,6 +165,166 @@ class LocationResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(location.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+    }
+
+    @Test
+    @Transactional
+    void getLocationsByIdFiltering() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        Long id = location.getId();
+
+        defaultLocationShouldBeFound("id.equals=" + id);
+        defaultLocationShouldNotBeFound("id.notEquals=" + id);
+
+        defaultLocationShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultLocationShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultLocationShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultLocationShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name equals to DEFAULT_NAME
+        defaultLocationShouldBeFound("name.equals=" + DEFAULT_NAME);
+
+        // Get all the locationList where name equals to UPDATED_NAME
+        defaultLocationShouldNotBeFound("name.equals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name not equals to DEFAULT_NAME
+        defaultLocationShouldNotBeFound("name.notEquals=" + DEFAULT_NAME);
+
+        // Get all the locationList where name not equals to UPDATED_NAME
+        defaultLocationShouldBeFound("name.notEquals=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameIsInShouldWork() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name in DEFAULT_NAME or UPDATED_NAME
+        defaultLocationShouldBeFound("name.in=" + DEFAULT_NAME + "," + UPDATED_NAME);
+
+        // Get all the locationList where name equals to UPDATED_NAME
+        defaultLocationShouldNotBeFound("name.in=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name is not null
+        defaultLocationShouldBeFound("name.specified=true");
+
+        // Get all the locationList where name is null
+        defaultLocationShouldNotBeFound("name.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameContainsSomething() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name contains DEFAULT_NAME
+        defaultLocationShouldBeFound("name.contains=" + DEFAULT_NAME);
+
+        // Get all the locationList where name contains UPDATED_NAME
+        defaultLocationShouldNotBeFound("name.contains=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByNameNotContainsSomething() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+
+        // Get all the locationList where name does not contain DEFAULT_NAME
+        defaultLocationShouldNotBeFound("name.doesNotContain=" + DEFAULT_NAME);
+
+        // Get all the locationList where name does not contain UPDATED_NAME
+        defaultLocationShouldBeFound("name.doesNotContain=" + UPDATED_NAME);
+    }
+
+    @Test
+    @Transactional
+    void getAllLocationsByShiftTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        locationRepository.saveAndFlush(location);
+        ShiftType shiftType;
+        if (TestUtil.findAll(em, ShiftType.class).isEmpty()) {
+            shiftType = ShiftTypeResourceIT.createEntity(em);
+            em.persist(shiftType);
+            em.flush();
+        } else {
+            shiftType = TestUtil.findAll(em, ShiftType.class).get(0);
+        }
+        em.persist(shiftType);
+        em.flush();
+        location.addShiftType(shiftType);
+        locationRepository.saveAndFlush(location);
+        Long shiftTypeId = shiftType.getId();
+
+        // Get all the locationList where shiftType equals to shiftTypeId
+        defaultLocationShouldBeFound("shiftTypeId.equals=" + shiftTypeId);
+
+        // Get all the locationList where shiftType equals to (shiftTypeId + 1)
+        defaultLocationShouldNotBeFound("shiftTypeId.equals=" + (shiftTypeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultLocationShouldBeFound(String filter) throws Exception {
+        restLocationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(location.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+
+        // Check, that the count call also returns 1
+        restLocationMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultLocationShouldNotBeFound(String filter) throws Exception {
+        restLocationMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restLocationMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

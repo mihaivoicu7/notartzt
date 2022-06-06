@@ -43,7 +43,7 @@
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "WorkLog",
   "pagination": "pagination",
   "readOnly": false,

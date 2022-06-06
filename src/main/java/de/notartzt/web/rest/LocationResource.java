@@ -1,7 +1,9 @@
 package de.notartzt.web.rest;
 
 import de.notartzt.repository.LocationRepository;
+import de.notartzt.service.LocationQueryService;
 import de.notartzt.service.LocationService;
+import de.notartzt.service.criteria.LocationCriteria;
 import de.notartzt.service.dto.LocationDTO;
 import de.notartzt.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +44,16 @@ public class LocationResource {
 
     private final LocationRepository locationRepository;
 
-    public LocationResource(LocationService locationService, LocationRepository locationRepository) {
+    private final LocationQueryService locationQueryService;
+
+    public LocationResource(
+        LocationService locationService,
+        LocationRepository locationRepository,
+        LocationQueryService locationQueryService
+    ) {
         this.locationService = locationService;
         this.locationRepository = locationRepository;
+        this.locationQueryService = locationQueryService;
     }
 
     /**
@@ -142,14 +150,30 @@ public class LocationResource {
      * {@code GET  /locations} : get all the locations.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of locations in body.
      */
     @GetMapping("/locations")
-    public ResponseEntity<List<LocationDTO>> getAllLocations(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Locations");
-        Page<LocationDTO> page = locationService.findAll(pageable);
+    public ResponseEntity<List<LocationDTO>> getAllLocations(
+        LocationCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Locations by criteria: {}", criteria);
+        Page<LocationDTO> page = locationQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /locations/count} : count all the locations.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/locations/count")
+    public ResponseEntity<Long> countLocations(LocationCriteria criteria) {
+        log.debug("REST request to count Locations by criteria: {}", criteria);
+        return ResponseEntity.ok().body(locationQueryService.countByCriteria(criteria));
     }
 
     /**

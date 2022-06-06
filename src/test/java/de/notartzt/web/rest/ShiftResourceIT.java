@@ -7,8 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import de.notartzt.IntegrationTest;
 import de.notartzt.domain.Shift;
+import de.notartzt.domain.ShiftType;
+import de.notartzt.domain.WorkLog;
 import de.notartzt.domain.enumeration.ShiftStatus;
 import de.notartzt.repository.ShiftRepository;
+import de.notartzt.service.criteria.ShiftCriteria;
 import de.notartzt.service.dto.ShiftDTO;
 import de.notartzt.service.mapper.ShiftMapper;
 import java.time.LocalDate;
@@ -36,6 +39,7 @@ class ShiftResourceIT {
 
     private static final LocalDate DEFAULT_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate SMALLER_DATE = LocalDate.ofEpochDay(-1L);
 
     private static final ShiftStatus DEFAULT_STATUS = ShiftStatus.OPEN;
     private static final ShiftStatus UPDATED_STATUS = ShiftStatus.CLOSED;
@@ -172,6 +176,271 @@ class ShiftResourceIT {
             .andExpect(jsonPath("$.id").value(shift.getId().intValue()))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getShiftsByIdFiltering() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        Long id = shift.getId();
+
+        defaultShiftShouldBeFound("id.equals=" + id);
+        defaultShiftShouldNotBeFound("id.notEquals=" + id);
+
+        defaultShiftShouldBeFound("id.greaterThanOrEqual=" + id);
+        defaultShiftShouldNotBeFound("id.greaterThan=" + id);
+
+        defaultShiftShouldBeFound("id.lessThanOrEqual=" + id);
+        defaultShiftShouldNotBeFound("id.lessThan=" + id);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date equals to DEFAULT_DATE
+        defaultShiftShouldBeFound("date.equals=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date equals to UPDATED_DATE
+        defaultShiftShouldNotBeFound("date.equals=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date not equals to DEFAULT_DATE
+        defaultShiftShouldNotBeFound("date.notEquals=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date not equals to UPDATED_DATE
+        defaultShiftShouldBeFound("date.notEquals=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsInShouldWork() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date in DEFAULT_DATE or UPDATED_DATE
+        defaultShiftShouldBeFound("date.in=" + DEFAULT_DATE + "," + UPDATED_DATE);
+
+        // Get all the shiftList where date equals to UPDATED_DATE
+        defaultShiftShouldNotBeFound("date.in=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date is not null
+        defaultShiftShouldBeFound("date.specified=true");
+
+        // Get all the shiftList where date is null
+        defaultShiftShouldNotBeFound("date.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsGreaterThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date is greater than or equal to DEFAULT_DATE
+        defaultShiftShouldBeFound("date.greaterThanOrEqual=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date is greater than or equal to UPDATED_DATE
+        defaultShiftShouldNotBeFound("date.greaterThanOrEqual=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsLessThanOrEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date is less than or equal to DEFAULT_DATE
+        defaultShiftShouldBeFound("date.lessThanOrEqual=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date is less than or equal to SMALLER_DATE
+        defaultShiftShouldNotBeFound("date.lessThanOrEqual=" + SMALLER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsLessThanSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date is less than DEFAULT_DATE
+        defaultShiftShouldNotBeFound("date.lessThan=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date is less than UPDATED_DATE
+        defaultShiftShouldBeFound("date.lessThan=" + UPDATED_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByDateIsGreaterThanSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where date is greater than DEFAULT_DATE
+        defaultShiftShouldNotBeFound("date.greaterThan=" + DEFAULT_DATE);
+
+        // Get all the shiftList where date is greater than SMALLER_DATE
+        defaultShiftShouldBeFound("date.greaterThan=" + SMALLER_DATE);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByStatusIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where status equals to DEFAULT_STATUS
+        defaultShiftShouldBeFound("status.equals=" + DEFAULT_STATUS);
+
+        // Get all the shiftList where status equals to UPDATED_STATUS
+        defaultShiftShouldNotBeFound("status.equals=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByStatusIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where status not equals to DEFAULT_STATUS
+        defaultShiftShouldNotBeFound("status.notEquals=" + DEFAULT_STATUS);
+
+        // Get all the shiftList where status not equals to UPDATED_STATUS
+        defaultShiftShouldBeFound("status.notEquals=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByStatusIsInShouldWork() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where status in DEFAULT_STATUS or UPDATED_STATUS
+        defaultShiftShouldBeFound("status.in=" + DEFAULT_STATUS + "," + UPDATED_STATUS);
+
+        // Get all the shiftList where status equals to UPDATED_STATUS
+        defaultShiftShouldNotBeFound("status.in=" + UPDATED_STATUS);
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByStatusIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+
+        // Get all the shiftList where status is not null
+        defaultShiftShouldBeFound("status.specified=true");
+
+        // Get all the shiftList where status is null
+        defaultShiftShouldNotBeFound("status.specified=false");
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByWorkLogIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+        WorkLog workLog;
+        if (TestUtil.findAll(em, WorkLog.class).isEmpty()) {
+            workLog = WorkLogResourceIT.createEntity(em);
+            em.persist(workLog);
+            em.flush();
+        } else {
+            workLog = TestUtil.findAll(em, WorkLog.class).get(0);
+        }
+        em.persist(workLog);
+        em.flush();
+        shift.addWorkLog(workLog);
+        shiftRepository.saveAndFlush(shift);
+        Long workLogId = workLog.getId();
+
+        // Get all the shiftList where workLog equals to workLogId
+        defaultShiftShouldBeFound("workLogId.equals=" + workLogId);
+
+        // Get all the shiftList where workLog equals to (workLogId + 1)
+        defaultShiftShouldNotBeFound("workLogId.equals=" + (workLogId + 1));
+    }
+
+    @Test
+    @Transactional
+    void getAllShiftsByTypeIsEqualToSomething() throws Exception {
+        // Initialize the database
+        shiftRepository.saveAndFlush(shift);
+        ShiftType type;
+        if (TestUtil.findAll(em, ShiftType.class).isEmpty()) {
+            type = ShiftTypeResourceIT.createEntity(em);
+            em.persist(type);
+            em.flush();
+        } else {
+            type = TestUtil.findAll(em, ShiftType.class).get(0);
+        }
+        em.persist(type);
+        em.flush();
+        shift.setType(type);
+        shiftRepository.saveAndFlush(shift);
+        Long typeId = type.getId();
+
+        // Get all the shiftList where type equals to typeId
+        defaultShiftShouldBeFound("typeId.equals=" + typeId);
+
+        // Get all the shiftList where type equals to (typeId + 1)
+        defaultShiftShouldNotBeFound("typeId.equals=" + (typeId + 1));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is returned.
+     */
+    private void defaultShiftShouldBeFound(String filter) throws Exception {
+        restShiftMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(shift.getId().intValue())))
+            .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+
+        // Check, that the count call also returns 1
+        restShiftMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("1"));
+    }
+
+    /**
+     * Executes the search, and checks that the default entity is not returned.
+     */
+    private void defaultShiftShouldNotBeFound(String filter) throws Exception {
+        restShiftMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$").isArray())
+            .andExpect(jsonPath("$").isEmpty());
+
+        // Check, that the count call also returns 0
+        restShiftMockMvc
+            .perform(get(ENTITY_API_URL + "/count?sort=id,desc&" + filter))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(content().string("0"));
     }
 
     @Test

@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface LocationRepository extends JpaRepository<Location, Long> {}
+public interface LocationRepository extends JpaRepository<Location, Long>, JpaSpecificationExecutor<Location> {}

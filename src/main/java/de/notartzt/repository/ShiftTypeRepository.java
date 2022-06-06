@@ -9,4 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ShiftTypeRepository extends JpaRepository<ShiftType, Long> {}
+public interface ShiftTypeRepository extends JpaRepository<ShiftType, Long>, JpaSpecificationExecutor<ShiftType> {}

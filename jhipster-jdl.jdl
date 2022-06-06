@@ -50,3 +50,4 @@ service all with serviceImpl
 
 // Set an angular suffix
 // angularSuffix * with mySuffix
+filter all

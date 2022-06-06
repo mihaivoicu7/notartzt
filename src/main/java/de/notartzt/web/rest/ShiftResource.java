@@ -1,7 +1,9 @@
 package de.notartzt.web.rest;
 
 import de.notartzt.repository.ShiftRepository;
+import de.notartzt.service.ShiftQueryService;
 import de.notartzt.service.ShiftService;
+import de.notartzt.service.criteria.ShiftCriteria;
 import de.notartzt.service.dto.ShiftDTO;
 import de.notartzt.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
@@ -17,7 +19,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -43,9 +44,12 @@ public class ShiftResource {
 
     private final ShiftRepository shiftRepository;
 
-    public ShiftResource(ShiftService shiftService, ShiftRepository shiftRepository) {
+    private final ShiftQueryService shiftQueryService;
+
+    public ShiftResource(ShiftService shiftService, ShiftRepository shiftRepository, ShiftQueryService shiftQueryService) {
         this.shiftService = shiftService;
         this.shiftRepository = shiftRepository;
+        this.shiftQueryService = shiftQueryService;
     }
 
     /**
@@ -142,14 +146,30 @@ public class ShiftResource {
      * {@code GET  /shifts} : get all the shifts.
      *
      * @param pageable the pagination information.
+     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of shifts in body.
      */
     @GetMapping("/shifts")
-    public ResponseEntity<List<ShiftDTO>> getAllShifts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
-        log.debug("REST request to get a page of Shifts");
-        Page<ShiftDTO> page = shiftService.findAll(pageable);
+    public ResponseEntity<List<ShiftDTO>> getAllShifts(
+        ShiftCriteria criteria,
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get Shifts by criteria: {}", criteria);
+        Page<ShiftDTO> page = shiftQueryService.findByCriteria(criteria, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /shifts/count} : count all the shifts.
+     *
+     * @param criteria the criteria which the requested entities should match.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
+     */
+    @GetMapping("/shifts/count")
+    public ResponseEntity<Long> countShifts(ShiftCriteria criteria) {
+        log.debug("REST request to count Shifts by criteria: {}", criteria);
+        return ResponseEntity.ok().body(shiftQueryService.countByCriteria(criteria));
     }
 
     /**

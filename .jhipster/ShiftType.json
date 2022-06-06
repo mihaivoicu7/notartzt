@@ -40,7 +40,7 @@
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "ShiftType",
   "pagination": "pagination",
   "readOnly": false,

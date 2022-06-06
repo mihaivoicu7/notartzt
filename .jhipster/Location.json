@@ -12,7 +12,7 @@
     }
   ],
   "fluentMethods": true,
-  "jpaMetamodelFiltering": false,
+  "jpaMetamodelFiltering": true,
   "name": "Location",
   "pagination": "pagination",
   "readOnly": false,

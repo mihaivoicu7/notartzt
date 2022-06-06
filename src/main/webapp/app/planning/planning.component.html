@@ -3,56 +3,11 @@
     <thead>
     <th scope="col">Datum</th>
     <th scope="col">Tag</th>
-    <th scope="col">TagDienst 07.30-18:00</th>
-    <th scope="col">TD Bemerkung</th>
-    <th scope="col">TD optional</th>
-    <th scope="col">NachtDienst 18.00-07:30</th>
-    <th scope="col">ND Bemerkung</th>
-    <th scope="col">ND optional</th>
     </thead>
     <tbody>
     <tr *ngFor="let day of days" [ngClass]="getLineClass(day)">
       <td>{{day.date}}</td>
       <td>{{day.dayOfWeek}}</td>
-      <td><span *ngIf="day.td">{{day.td}}</span>
-        <button *ngIf="!day.td && !day.tdUsers" class="btn btn-outline-success" (click)="setUser(day, 'td')">+
-        </button>
-        <ul *ngIf="day.tdUsers">
-          <li *ngFor="let tdUser of day.tdUsers">
-            <div style="width: 100%">
-              <span>{{tdUser.user}} - {{tdUser.comment}}</span>
-              <span style="float:right">
-                            <a>
-                                <fa-icon
-                                  ngbTooltip="Löschen" [icon]="'trash'"></fa-icon></a>
-                        <a><fa-icon ngbTooltip="Optional" [icon]="'arrow-right'"></fa-icon>
-                        </a>
-                        </span>
-            </div>
-          </li>
-        </ul>
-        <div *ngIf="day.tdUsers">
-          <ng-select [items]="users"></ng-select>
-        </div>
-      </td>
-      <td>
-        <input type="text" class="form-control">
-      </td>
-      <td><span *ngIf="day.tdOpt">{{day.tdOpt}}</span>
-        <button *ngIf="!day.tdOpt" class="btn btn-outline-success" (click)="setUser(day, 'tdOpt')">+
-        </button>
-      </td>
-      <td><span *ngIf="day.nd">{{day.nd}}</span>
-        <button *ngIf="!day.nd" class="btn btn-outline-success" (click)="setUser(day, 'nd')">+
-        </button>
-      </td>
-      <td>
-        <input type="text" class="form-control">
-      </td>
-      <td><span *ngIf="day.ndOpt">{{day.ndOpt}}</span>
-        <button *ngIf="!day.ndOpt" class="btn btn-outline-success" (click)="setUser(day, 'ndOpt')">+
-        </button>
-      </td>
     </tr>
     </tbody>
   </table>
