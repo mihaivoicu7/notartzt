@@ -37,8 +37,11 @@ import {
   faUsers,
   faUsersCog,
   faWrench,
+  faClock,
+  faBuilding
   // jhipster-needle-add-icon-import
 } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar';
 
 export const fontAwesomeIcons = [
   faArrowLeft,
@@ -79,5 +82,8 @@ export const fontAwesomeIcons = [
   faUsers,
   faUsersCog,
   faWrench,
+  faClock,
+  faBuilding,
+  faCalendar
   // jhipster-needle-add-icon-import
 ];

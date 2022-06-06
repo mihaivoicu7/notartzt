@@ -1,0 +1,27 @@
+{
+  "notartztApp": {
+    "shift": {
+      "home": {
+        "title": "Shifts",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Shift",
+        "createOrEditLabel": "Create or edit a Shift",
+        "notFound": "No Shifts found"
+      },
+      "created": "A new Shift is created with identifier {{ param }}",
+      "updated": "A Shift is updated with identifier {{ param }}",
+      "deleted": "A Shift is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Shift {{ id }}?"
+      },
+      "detail": {
+        "title": "Shift"
+      },
+      "id": "ID",
+      "date": "Date",
+      "status": "Status",
+      "workLog": "Work Log",
+      "type": "Type"
+    }
+  }
+}

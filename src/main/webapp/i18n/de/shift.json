@@ -1,0 +1,27 @@
+{
+  "notartztApp": {
+    "shift": {
+      "home": {
+        "title": "Shifts",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Shift erstellen",
+        "createOrEditLabel": "Shift erstellen oder bearbeiten",
+        "notFound": "Keine Shifts gefunden"
+      },
+      "created": "Shift erstellt mit ID {{ param }}",
+      "updated": "Shift aktualisiert mit ID {{ param }}",
+      "deleted": "Shift gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Shift {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Shift"
+      },
+      "id": "ID",
+      "date": "Date",
+      "status": "Status",
+      "workLog": "Work Log",
+      "type": "Type"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "applications": "*",
+  "changelogDate": "20220606163611",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "shift_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "startHour",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "23",
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "startMinute",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "59",
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "endHour",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "23",
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "endMinute",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "59",
+      "fieldValidateRulesMin": "0"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ShiftType",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "shift",
+      "otherEntityRelationshipName": "type",
+      "relationshipName": "shift",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "location",
+      "otherEntityRelationshipName": "shiftType",
+      "relationshipName": "location",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

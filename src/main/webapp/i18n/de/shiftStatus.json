@@ -1,0 +1,9 @@
+{
+  "notartztApp": {
+    "ShiftStatus": {
+      "null": "",
+      "OPEN": "OPEN",
+      "CLOSED": "CLOSED"
+    }
+  }
+}

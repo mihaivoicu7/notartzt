@@ -51,6 +51,13 @@ public class CacheConfiguration {
             createCache(cm, de.notartzt.domain.User.class.getName());
             createCache(cm, de.notartzt.domain.Authority.class.getName());
             createCache(cm, de.notartzt.domain.User.class.getName() + ".authorities");
+            createCache(cm, de.notartzt.domain.Shift.class.getName());
+            createCache(cm, de.notartzt.domain.Shift.class.getName() + ".workLogs");
+            createCache(cm, de.notartzt.domain.Location.class.getName());
+            createCache(cm, de.notartzt.domain.Location.class.getName() + ".shiftTypes");
+            createCache(cm, de.notartzt.domain.ShiftType.class.getName());
+            createCache(cm, de.notartzt.domain.ShiftType.class.getName() + ".shifts");
+            createCache(cm, de.notartzt.domain.WorkLog.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

@@ -1,0 +1,39 @@
+{
+  "applications": "*",
+  "changelogDate": "20220606163612",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "shift",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "ShiftStatus",
+      "fieldValues": "OPEN,CLOSED"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Shift",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "workLog",
+      "otherEntityRelationshipName": "shift",
+      "relationshipName": "workLog",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "shiftType",
+      "otherEntityRelationshipName": "shift",
+      "relationshipName": "type",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

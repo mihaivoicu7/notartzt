@@ -1,0 +1,30 @@
+{
+  "notartztApp": {
+    "shiftType": {
+      "home": {
+        "title": "Shift Types",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Shift Type",
+        "createOrEditLabel": "Create or edit a Shift Type",
+        "notFound": "No Shift Types found"
+      },
+      "created": "A new Shift Type is created with identifier {{ param }}",
+      "updated": "A Shift Type is updated with identifier {{ param }}",
+      "deleted": "A Shift Type is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Shift Type {{ id }}?"
+      },
+      "detail": {
+        "title": "Shift Type"
+      },
+      "id": "ID",
+      "name": "Name",
+      "startHour": "Start Hour",
+      "startMinute": "Start Minute",
+      "endHour": "End Hour",
+      "endMinute": "End Minute",
+      "shift": "Shift",
+      "location": "Location"
+    }
+  }
+}

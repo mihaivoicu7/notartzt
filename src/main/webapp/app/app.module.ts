@@ -25,34 +25,38 @@ import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
 import { ErrorComponent } from './layouts/error/error.component';
+import { PlanningModule } from './planning/planning.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     SharedModule,
     HomeModule,
+    PlanningModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     AppRoutingModule,
     // Set this to true to enable service worker (PWA)
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: false }),
+    ServiceWorkerModule.register('ngsw-worker.js', {enabled: false}),
     HttpClientModule,
-    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-', caseSensitive: true }),
+    NgxWebstorageModule.forRoot({prefix: 'jhi', separator: '-', caseSensitive: true}),
     TranslationModule,
   ],
   providers: [
     Title,
-    { provide: LOCALE_ID, useValue: 'de' },
-    { provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter },
+    {provide: LOCALE_ID, useValue: 'de'},
+    {provide: NgbDateAdapter, useClass: NgbDateDayjsAdapter},
     httpInterceptorProviders,
   ],
-  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
+  declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective,
+    FooterComponent],
   bootstrap: [MainComponent],
 })
 export class AppModule {
-  constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig) {
+  constructor(applicationConfigService: ApplicationConfigService, iconLibrary: FaIconLibrary,
+              dpConfig: NgbDatepickerConfig) {
     applicationConfigService.setEndpointPrefix(SERVER_API_URL);
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
-    dpConfig.minDate = { year: dayjs().subtract(100, 'year').year(), month: 1, day: 1 };
+    dpConfig.minDate = {year: dayjs().subtract(100, 'year').year(), month: 1, day: 1};
   }
 }

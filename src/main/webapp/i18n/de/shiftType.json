@@ -1,0 +1,30 @@
+{
+  "notartztApp": {
+    "shiftType": {
+      "home": {
+        "title": "Shift Types",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Shift Type erstellen",
+        "createOrEditLabel": "Shift Type erstellen oder bearbeiten",
+        "notFound": "Keine Shift Types gefunden"
+      },
+      "created": "Shift Type erstellt mit ID {{ param }}",
+      "updated": "Shift Type aktualisiert mit ID {{ param }}",
+      "deleted": "Shift Type gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Shift Type {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Shift Type"
+      },
+      "id": "ID",
+      "name": "Name",
+      "startHour": "Start Hour",
+      "startMinute": "Start Minute",
+      "endHour": "End Hour",
+      "endMinute": "End Minute",
+      "shift": "Shift",
+      "location": "Location"
+    }
+  }
+}

@@ -1,0 +1,212 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-shift-type-heading" data-cy="ShiftTypeCreateUpdateHeading" jhiTranslate="notartztApp.shiftType.home.createOrEditLabel">
+        Create or edit a Shift Type
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+          <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.startHour" for="field_startHour">Start Hour</label>
+          <input type="number" class="form-control" name="startHour" id="field_startHour" data-cy="startHour" formControlName="startHour" />
+          <div *ngIf="editForm.get('startHour')!.invalid && (editForm.get('startHour')!.dirty || editForm.get('startHour')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startHour')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startHour')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startHour')?.errors?.max"
+              jhiTranslate="entity.validation.max"
+              [translateValues]="{ max: 23 }"
+            >
+              This field cannot be more than 23.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('startHour')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.startMinute" for="field_startMinute">Start Minute</label>
+          <input
+            type="number"
+            class="form-control"
+            name="startMinute"
+            id="field_startMinute"
+            data-cy="startMinute"
+            formControlName="startMinute"
+          />
+          <div *ngIf="editForm.get('startMinute')!.invalid && (editForm.get('startMinute')!.dirty || editForm.get('startMinute')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startMinute')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startMinute')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('startMinute')?.errors?.max"
+              jhiTranslate="entity.validation.max"
+              [translateValues]="{ max: 59 }"
+            >
+              This field cannot be more than 59.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('startMinute')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.endHour" for="field_endHour">End Hour</label>
+          <input type="number" class="form-control" name="endHour" id="field_endHour" data-cy="endHour" formControlName="endHour" />
+          <div *ngIf="editForm.get('endHour')!.invalid && (editForm.get('endHour')!.dirty || editForm.get('endHour')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endHour')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endHour')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endHour')?.errors?.max"
+              jhiTranslate="entity.validation.max"
+              [translateValues]="{ max: 23 }"
+            >
+              This field cannot be more than 23.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('endHour')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.endMinute" for="field_endMinute">End Minute</label>
+          <input type="number" class="form-control" name="endMinute" id="field_endMinute" data-cy="endMinute" formControlName="endMinute" />
+          <div *ngIf="editForm.get('endMinute')!.invalid && (editForm.get('endMinute')!.dirty || editForm.get('endMinute')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endMinute')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endMinute')?.errors?.min"
+              jhiTranslate="entity.validation.min"
+              [translateValues]="{ min: 0 }"
+            >
+              This field should be at least 0.
+            </small>
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('endMinute')?.errors?.max"
+              jhiTranslate="entity.validation.max"
+              [translateValues]="{ max: 59 }"
+            >
+              This field cannot be more than 59.
+            </small>
+            <small
+              class="form-text text-danger"
+              [hidden]="!editForm.get('endMinute')?.errors?.number"
+              jhiTranslate="entity.validation.number"
+            >
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="notartztApp.shiftType.location" for="field_location">Location</label>
+          <select class="form-control" id="field_location" data-cy="location" name="location" formControlName="location">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="locationOption.id === editForm.get('location')!.value?.id ? editForm.get('location')!.value : locationOption"
+              *ngFor="let locationOption of locationsSharedCollection; trackBy: trackLocationById"
+            >
+              {{ locationOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

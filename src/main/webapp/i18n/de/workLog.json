@@ -1,0 +1,30 @@
+{
+  "notartztApp": {
+    "workLog": {
+      "home": {
+        "title": "Work Logs",
+        "refreshListLabel": "Liste aktualisieren",
+        "createLabel": "Work Log erstellen",
+        "createOrEditLabel": "Work Log erstellen oder bearbeiten",
+        "notFound": "Keine Work Logs gefunden"
+      },
+      "created": "Work Log erstellt mit ID {{ param }}",
+      "updated": "Work Log aktualisiert mit ID {{ param }}",
+      "deleted": "Work Log gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Work Log {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Work Log"
+      },
+      "id": "ID",
+      "note": "Note",
+      "startHour": "Start Hour",
+      "startMinute": "Start Minute",
+      "endHour": "End Hour",
+      "endMinute": "End Minute",
+      "optional": "Optional",
+      "shift": "Shift"
+    }
+  }
+}

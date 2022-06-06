@@ -1,0 +1,52 @@
+
+entity Location {
+	name String required
+}
+
+entity ShiftType {
+	name String required,
+    startHour Integer required min(0) max(23),
+    startMinute Integer required min(0) max(59),
+    endHour Integer required min(0) max(23),
+    endMinute Integer required min(0) max(59)
+}
+
+entity Shift {
+	date LocalDate required,
+    status ShiftStatus
+}
+
+entity WorkLog {
+	note String,
+    startHour Integer required min(0) max(23),
+    startMinute Integer required min(0) max(59),
+    endHour Integer required min(0) max(23),
+    endMinute Integer required min(0) max(59),
+    optional Boolean
+}
+
+enum ShiftStatus {
+    OPEN, CLOSED
+}
+
+relationship ManyToOne {
+	WorkLog{user} to User,
+}
+
+relationship OneToMany {
+	Location to ShiftType{location},
+    ShiftType to Shift{type}
+    Shift to WorkLog{shift}
+}
+
+// Set pagination options
+paginate all with pagination
+
+// Use Data Transfer Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix

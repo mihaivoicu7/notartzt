@@ -1,0 +1,58 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="workLog">
+      <h2 data-cy="workLogDetailsHeading"><span jhiTranslate="notartztApp.workLog.detail.title">Work Log</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ workLog.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.note">Note</span></dt>
+        <dd>
+          <span>{{ workLog.note }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.startHour">Start Hour</span></dt>
+        <dd>
+          <span>{{ workLog.startHour }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.startMinute">Start Minute</span></dt>
+        <dd>
+          <span>{{ workLog.startMinute }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.endHour">End Hour</span></dt>
+        <dd>
+          <span>{{ workLog.endHour }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.endMinute">End Minute</span></dt>
+        <dd>
+          <span>{{ workLog.endMinute }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.optional">Optional</span></dt>
+        <dd>
+          <span>{{ workLog.optional }}</span>
+        </dd>
+        <dt><span jhiTranslate="notartztApp.workLog.shift">Shift</span></dt>
+        <dd>
+          <div *ngIf="workLog.shift">
+            <a [routerLink]="['/shift', workLog.shift?.id, 'view']">{{ workLog.shift?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/work-log', workLog.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

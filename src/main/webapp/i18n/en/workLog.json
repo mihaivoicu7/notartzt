@@ -1,0 +1,30 @@
+{
+  "notartztApp": {
+    "workLog": {
+      "home": {
+        "title": "Work Logs",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Work Log",
+        "createOrEditLabel": "Create or edit a Work Log",
+        "notFound": "No Work Logs found"
+      },
+      "created": "A new Work Log is created with identifier {{ param }}",
+      "updated": "A Work Log is updated with identifier {{ param }}",
+      "deleted": "A Work Log is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Work Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Work Log"
+      },
+      "id": "ID",
+      "note": "Note",
+      "startHour": "Start Hour",
+      "startMinute": "Start Minute",
+      "endHour": "End Hour",
+      "endMinute": "End Minute",
+      "optional": "Optional",
+      "shift": "Shift"
+    }
+  }
+}
