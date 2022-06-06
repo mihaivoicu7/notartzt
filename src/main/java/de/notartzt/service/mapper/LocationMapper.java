@@ -4,8 +4,6 @@ import de.notartzt.domain.Location;
 import de.notartzt.service.dto.LocationDTO;
 import org.mapstruct.*;
 
-/**
- * Mapper for the entity {@link Location} and its DTO {@link LocationDTO}.
- */
-@Mapper(componentModel = "spring")
+/** Mapper for the entity {@link Location} and its DTO {@link LocationDTO}. */
+@Mapper(componentModel = "spring", uses = ShiftTypeMapper.class)
 public interface LocationMapper extends EntityMapper<LocationDTO, Location> {}

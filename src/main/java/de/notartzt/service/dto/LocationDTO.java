@@ -1,6 +1,7 @@
 package de.notartzt.service.dto;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.validation.constraints.*;
 
@@ -13,6 +14,8 @@ public class LocationDTO implements Serializable {
 
     @NotNull
     private String name;
+
+    private List<ShiftTypeDTO> shiftTypes;
 
     public Long getId() {
         return id;
@@ -28,6 +31,14 @@ public class LocationDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<ShiftTypeDTO> getShiftTypes() {
+        return shiftTypes;
+    }
+
+    public void setShiftTypes(List<ShiftTypeDTO> shiftTypes) {
+        this.shiftTypes = shiftTypes;
     }
 
     @Override
